@@ -1,0 +1,20 @@
+<img src="/files/shoppingCart.jpg" style="max-block-size: 200px;">
+<div className="descproducto">
+<h1>Restablecer Contraseña</h1>
+        <p>Por favor, ingresa tu nueva contraseña.</p>
+
+        <form action="/api/user/reset-password/{{token}}" method="POST">
+            <input type="hidden" name="token" value="{{token}}">
+
+            <label for="password">Nueva Contraseña</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <button type="submit">Restablecer Contraseña</button>
+</div>
+<hr>
+<a href="/"><h2>Volver al inicio</h2></a>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css">

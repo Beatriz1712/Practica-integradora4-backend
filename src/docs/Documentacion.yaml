@@ -1,0 +1,365 @@
+openapi: 3.0.0
+info:
+  title: Documentación API Completa
+  description: API para la gestión de carritos, productos y usuarios
+  version: 1.0.0
+
+tags:
+  - name: Carts
+    description: Operaciones de Carritos
+  - name: Products
+    description: Operaciones de Productos
+  - name: Users
+    description: Operaciones de Usuarios
+
+paths:
+  # Paths para Carritos
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Lista de carritos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{id}:
+    get:
+      summary: Obtiene un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalles del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+    put:
+      summary: Actualiza un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        "200":
+          description: Carrito actualizado satisfactoriamente
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: Elimina un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito eliminado satisfactoriamente
+        "404":
+          description: Carrito no encontrado
+        "500":
+          description: Error interno del servidor
+
+  # Paths para Productos
+  /api/prod:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/{id}:
+    get:
+      summary: Obtiene un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalles del producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/add:
+    post:
+      summary: Agrega un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          description: Producto agregado satisfactoriamente
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/update/{id}:
+    put:
+      summary: Actualiza un producto existente
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          description: Producto actualizado satisfactoriamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/delete/{id}:
+    delete:
+      summary: Elimina un producto
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado satisfactoriamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  # Paths para Usuarios
+  /api/user/register:
+    post:
+      summary: Registra un nuevo usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: Usuario registrado satisfactoriamente
+        "400":
+          description: Datos faltantes o inválidos
+        "500":
+          description: Error interno del servidor
+
+  /api/user/login:
+    post:
+      summary: Inicia sesión de usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Inicio de sesión exitoso
+        "400":
+          description: Credenciales inválidas
+        "500":
+          description: Error interno del servidor
+
+  /api/user/logout:
+    get:
+      summary: Cierra la sesión del usuario
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Sesión cerrada satisfactoriamente
+        "500":
+          description: Error interno del servidor
+
+  /api/user/users:
+    get:
+      summary: Obtiene todos los usuarios
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        "500":
+          description: Error interno del servidor
+
+  /api/user/users/{userId}:
+    get:
+      summary: Obtiene un usuario por ID
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalles del usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    # Schemas para Carritos
+    Cart:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    # Schemas para Productos
+    Product:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - stock
+        - category
+        - thumbnails
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        carru1:
+          type: string
+        carru2:
+          type: string
+        carru3:
+          type: string
+        minimo:
+          type: number
+        availability:
+          type: boolean
+
+    # Schemas para Usuarios
+    User:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - age
+        - password
+        - rol
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        age:
+          type: integer
+        password:
+          type: string
+        rol:
+          type: string

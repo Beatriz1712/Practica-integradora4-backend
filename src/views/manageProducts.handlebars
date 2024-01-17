@@ -1,0 +1,47 @@
+<img src="/files/shoppingCart.jpg" style="max-block-size: 200px;">
+<hr>
+<a href="/chat"><h3>Ir al chat</h3></a>
+<a href="/profile"><h3>Ir a tu perfil de usuario</h3></a>
+<a href="/cart/6519628deea059c6ae6e8e6d"><h3>Ir al Carrito</h3></a>
+<a href="/"><h3>Volver al inicio</h3></a>
+<a href="/mockingproducts">Ir a Mocking de Productos ficticios</a>
+
+<h1>Lista de Productos en base de datos</h1>
+
+    <table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <!-- Agrega más columnas según sea necesario -->
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <form action="/api/prod/update/{{this._id}}" method="post">
+                <td><input type="text" name="title" value="{{this.title}}" /></td>
+                <td><input type="text" name="description" value="{{this.description}}" /></td>
+                <td><input type="number" name="price" value="{{this.price}}" /></td>
+                <!-- Más campos de entrada para otros atributos -->
+                <td>
+                    <button type="submit">Actualizar</button>
+                </td>
+            </form>
+            <form action="/api/prod/delete/{{this._id}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <td>
+                <button type="submit">Eliminar</button>
+            </td>
+            
+        </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+</div>
+
+

@@ -1,0 +1,28 @@
+<img src="/files/shoppingCart.jpg" style="max-block-size: 200px;">
+
+<div className="descproducto">
+
+<h1>Perfil de Usuario</h1><h3><a href="/api/user/logout">Cerrar sesión</a></h3>
+<p>Nombre: {{first_name}} {{last_name}}</p>
+<p>Email: {{email}}</p>
+<p>Rol: {{rol}}</p>
+
+
+<!-- Mostrar enlace solo si el usuario es administrador -->
+{{#if (or (eq rol 'admin') (eq rol 'premium'))}}
+    <a href="/addProduct"><h2>Cargar un nuevo producto</h2></a>
+    <a href="/manage-products"><h2>Modificar Productos</h2></a>
+{{/if}}
+
+<!-- Enlace solo disponible para Admin -->
+{{#if (eq rol 'admin')}}
+    <a href="/allusers"><h2>Todos los usuarios</h2></a>
+{{/if}}
+
+</div>
+
+<a href="/"><h2>Volver al inicio</h2></a>
+<a href="/products"><h2>Ir a todos los productos</h2></a>
+<a href="/chat"><h2>Ir al chat</h2></a>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css">

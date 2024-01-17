@@ -1,0 +1,43 @@
+<img src="/files/shoppingCart.jpg" style="max-block-size: 200px;">
+<hr>
+<a href="/chat"><h3>Ir al chat</h3></a>
+<a href="/profile"><h3>Ir a tu perfil de usuario</h3></a>
+<a href="/cart/6519628deea059c6ae6e8e6d"><h3>Ir al Carrito</h3></a>
+<a href="/"><h3>Volver al inicio</h3></a>
+<a href="/mockingproducts">Ir a Mocking de Productos ficticios</a>
+
+<h1>Lista de Usuarios</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol Actual</th>
+                <th>Actualizar Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+    <tr>
+        <td>{{first_name}} {{last_name}}</td>
+        <td>{{email}}</td>
+        <td>{{rol}}</td>
+        <td>
+            <form action="/api/user/change-role/{{_id}}" method="POST">
+                <select name="newRole">
+                    <option value="user" {{#if this.isUserRole}}selected{{/if}}>User</option>
+                    <option value="admin" {{#if this.isAdminRole}}selected{{/if}}>Admin</option>
+                    <option value="premium" {{#if this.isPremiumRole}}selected{{/if}}>Premium</option>
+                </select>
+                <button type="submit">Actualizar</button>
+            </form>
+        </td>
+    </tr>
+{{/each}}
+        </tbody>
+    </table>
+
+</div>
+
+

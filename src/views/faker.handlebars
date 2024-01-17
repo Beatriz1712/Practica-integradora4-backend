@@ -1,0 +1,21 @@
+
+<h1>Productos Faker</h1>
+<a href="/">Volver al inicio</a>
+<div class="shop">
+  {{#each products}}
+    <div class="productos">
+      <img class="vuelta" src="{{this.carru1}}" alt="{{this.title}}" />
+      <div class="infoCard">
+        <div class="textosprod">
+          <h2 class="productos__nombre">{{this.title}}</h2>
+          <div>
+            <h2 class="productos__precio">${{this.price}}</h2>
+            <h4 class="productos__gramo">x {{this.minimo}} gramos</h4>
+          </div>
+          <button class="add-to-cart-btn" data-product-id="{{this._id}}">Agregar al carrito</button>
+          <a href="/products/{{this._id}}">Ver detalles</a>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

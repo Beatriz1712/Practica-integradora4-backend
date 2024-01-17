@@ -1,0 +1,29 @@
+<h1>Productos en el carrito</h1>
+{{#if cart.products}}
+  <p>Hay {{cart.products.length}} productos en el carrito.</p>
+  <ul>
+    {{#each cart.products}}
+      <li>
+        Producto ID: {{this.productId}}, Cantidad: {{this.quantity}}
+        <br>
+        
+          <form action="/delete/cart/{{../cartId}}/products/{{this.productId}}" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit">Eliminar</button>
+          </form>
+         
+          <p id="deleteAlert" style="color:red; display:none"> PRODUCTO ELIMINADO</p>"
+      </li>
+    {{/each}}
+  </ul>
+  <form action="/cart/{{cartId}}/products" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Eliminar todos los productos</button>
+  </form>
+{{else}}
+  <p>El carrito está vacío.</p>
+{{/if}}
+
+<a href="/products"><h3>Volver a todos los productos</h3></a>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<script src="/js/delete.js"></script>

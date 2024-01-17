@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  title: Documentación de Productos
+  description: API para la gestión de productos
+  version: 1.0.0
+paths:
+  /api/prod:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/{id}:
+    get:
+      summary: Obtiene un producto por ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalles del producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/add:
+    post:
+      summary: Agrega un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          description: Producto agregado satisfactoriamente
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/update/{id}:
+    put:
+      summary: Actualiza un producto existente
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        "200":
+          description: Producto actualizado satisfactoriamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+  /api/prod/delete/{id}:
+    delete:
+      summary: Elimina un producto
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado satisfactoriamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - title
+        - description
+        - price
+        - stock
+        - category
+        - thumbnails
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        stock:
+          type: number
+        category:
+          type: string
+        thumbnails:
+          type: string
+        carru1:
+          type: string
+        carru2:
+          type: string
+        carru3:
+          type: string
+        minimo:
+          type: number
+        availability:
+          type: boolean

@@ -1,5 +1,4 @@
 import { Router } from "express";
-const router = Router();
 import CartRepository from "../repositories/CartRepository.js";
 import ProductManager from "../controllers/ProductManager.js"
 import CartManager from "../controllers/CartManager.js"
@@ -7,6 +6,7 @@ import { isAdmin } from "../config/middlewares.js";
 import { getUsersAndView } from '../controllers/UserController.js';
 import ProductController from "../controllers/ProductController.js";
 
+const router = Router();
 const product = new ProductManager
 const cart = new CartManager
 const repocart = new CartRepository();
@@ -140,21 +140,7 @@ router.get("/register", async (req, res) => {
     });
 })
 
-//profile
-/* router.get("/profile", isAdmin, async (req, res) => { 
-    if (!req.session.emailUsuario) {
-      return res.redirect("/login");
-    }
-    res.render("profile", {
-      title: "Vista Profile Admin",
-      first_name: req.user.first_name,
-    last_name: req.user.last_name,
-    email: req.user.email,
-    rol: req.user.rol,
-    isAdmin: req.user.rol === 'admin'
-    });
-  }); */
-  /**************** */
+  //profile
   router.get("/profile", isAuthenticated, async (req, res) => {
     if (!req.session.emailUsuario) {
       return res.redirect("/login");
@@ -191,16 +177,22 @@ router.get('/reset-password/:token', (req, res) => {
 //todos los usuarios
 router.get('/allusers', getUsersAndView)
 
-//editar los productos
-/* router.get("/manage-products", isAdmin, async (req, res) => {
-    try {
-        const products = await product.getProducts();
-        res.render("manageProducts", { products });
-    } catch (error) {
-        res.status(500).send("Error al obtener productos: " + error.message);
-    }
-}); */
+//editar productos
 router.get("/manage-products", isAuthenticated, ProductController.manageProducts)
 
+//Carga de archivos para ser premium
+router.get('/cambiopremium', isAuthenticated, (req, res) => {
+    res.render('cambioAPremium', {
+        title: "Cambio a Usuario Premium",
+        userId: req.user._id // Asegúrar  que req.user._id está disponible y es correcto
+    });
+});
+
+//Cambiar a premium
+router.get('/confirmar-premium', isAuthenticated, (req, res) => {
+    res.render('confirmarPremium', {
+        userId: req.user._id 
+    });
+});
 
 export default router

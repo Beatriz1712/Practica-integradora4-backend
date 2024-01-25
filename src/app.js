@@ -13,12 +13,12 @@ import productsRouter from './router/product.routes.js';
 import userRouter from './router/user.routes.js';
 import messagesRouter from "./router/messages.routes.js"
 import Chance from 'chance';
-
+//revisar si continua method
 import methodOverride from "method-override";
 //para aumentar los listeners
 import EventEmitter from "events";
 EventEmitter.defaultMaxListeners = 15;
-
+/**** */
 import swaggerJSDoc from 'swagger-jsdoc';
 import SwaggerUiExpress from 'swagger-ui-express';
 

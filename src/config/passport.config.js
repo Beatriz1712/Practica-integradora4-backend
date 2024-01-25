@@ -67,19 +67,23 @@ const initializePassword = () => {
 
     passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
         try {
-            const user = await usersModel.findOne({ email: username });
-    
-            if (!user) {
-                return done(null, false, { message: 'Usuario no encontrado' });
-            }
-    
-            const isValid = await isValidPassword(password, user.password);
-    
-            if (!isValid) {
-                return done(null, false, { message: 'Contraseña incorrecta' });
-            }
-    
-            return done(null, user);
+          const user = await usersModel.findOne({ email: username });
+
+          if (!user) {
+            return done(null, false, { message: "Usuario no encontrado" });
+          }
+
+          const isValid = await isValidPassword(password, user.password);
+
+          if (!isValid) {
+            return done(null, false, { message: "Contraseña incorrecta" });
+          }
+          
+          // Actualizar la última conexión
+          user.last_connection = new Date();
+          await user.save();
+
+          return done(null, user);
         } catch (error) {
             return done(error);
         }

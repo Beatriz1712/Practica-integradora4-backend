@@ -19,6 +19,10 @@
     <a href="/allusers"><h2>Todos los usuarios</h2></a>
 {{/if}}
 
+<!-- Enlace para cambiar a usuario premium (solo visible para usuarios con rol "user") -->
+{{#if (eq rol 'user')}}
+  <a href="/cambiopremium"><h2>Cambiar a usuario premium</h2></a>
+{{/if}}
 </div>
 
 <a href="/"><h2>Volver al inicio</h2></a>

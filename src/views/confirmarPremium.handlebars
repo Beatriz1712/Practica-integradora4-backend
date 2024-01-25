@@ -1,0 +1,36 @@
+<h1>Confirmar Cambio a Usuario Premium</h1>
+<p>Tus documentos han sido subidos con éxito.</p>
+<button id="btnCambiarPremium" class="btn btn-primary">Cambiar a Usuario Premium</button>
+
+<script>
+    const userId = "{{userId}}"; // Asegúrarsete de que Handlebars está sustituyendo esto correctamente
+  console.log("UserID para la solicitud:", '{{userId}}');
+  document.getElementById('btnCambiarPremium').addEventListener('click', function() {
+    fetch('/api/user/premium/{{userId}}', { // Ajusta la ruta aquí
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error en la solicitud');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        alert('¡Felicidades! Ahora eres un usuario premium.');
+        window.location.href = '/profile'; // Redirige al perfil
+      } else {
+        alert('Error al procesar la solicitud: ' + data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert(error.message);
+    });
+  });
+</script>
+
+<link rel="stylesheet" type="text/css" href="/css/style.css">

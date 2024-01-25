@@ -1,0 +1,22 @@
+<h1>Cargar Documentos para Cambio a Usuario Premium</h1>
+
+<form action="/api/user/{{userId}}/documents" method="post" enctype="multipart/form-data">
+  <div>
+    <label for="identificacion">Identificación:</label>
+    <input type="file" id="identificacion" name="identificacion" required>
+  </div>
+
+  <div>
+    <label for="comprobanteDomicilio">Comprobante de Domicilio:</label>
+    <input type="file" id="credencial-domicilio" name="credencial-domicilio" required>
+  </div>
+
+  <div>
+    <label for="estadoCuenta">Comprobante de Estado de Cuenta:</label>
+    <input type="file" id="estado-cuenta" name="estado-cuenta" required>
+  </div>
+
+  <button type="submit">Subir Documentos</button>
+</form>
+
+<a href="/profile">Regresar al Perfil</a>

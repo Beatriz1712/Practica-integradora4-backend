@@ -35,12 +35,13 @@ export const loginUser = async (req, res, next) => {
           if (err || !user) {
               return res.status(401).send(info && info.message ? info.message : 'Error de autenticación');
           }
-          req.login(user, (err) => {
-              if (err) {
-                  return next(err);
-              }
-              return res.redirect('/profile'); // Redirige al usuario a /profile después de iniciar sesión
-          });
+         req.login(user, async (err) => {
+           if (err) {
+             return next(err);
+           }
+           await userRepository.updateUser(user._id, {last_connection: new Date() }); //actualiza la ultima conexion del usuario
+           return res.redirect("/profile"); // Redirige al usuario a /profile después de iniciar sesión
+         });  
       } catch (error) {
           return next(error);
       }
@@ -124,7 +125,7 @@ export const getUsersAndView = async (req, res) => {
   }
 };
 
-//cambio de rol
+//cambio de rol desde el admin
 export const changeUserRole = async (req, res) => {
   const { userId } = req.params;
   const { newRole } = req.body;
@@ -138,3 +139,73 @@ export const changeUserRole = async (req, res) => {
       res.status(500).send('Error al actualizar el rol del usuario');
   }
 };
+//actualizar a usuario premium
+export const updateToPremium = async (req, res) => {
+  console.log("UID recibido:", req.params)
+  try {
+    const { uid } = req.params;
+    const user = await userRepository.getUserById(uid);
+
+    // Documentos requeridos
+    const requiredDocs = ['Identificacion', 'Comprobante de domicilio', 'Comprobante de estado de cuenta'];
+
+    const normalizeString = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    
+    // Verifica si cada documento requerido está presente
+    const allDocsUploaded = requiredDocs.every(doc =>
+      user.documents.some(userDoc => normalizeString(userDoc.name) === normalizeString(doc))
+    );
+
+
+    if (!allDocsUploaded) {
+      console.log("Documentos cargados por el usuario:", user.documents);
+      console.log("Documentos requeridos que no se encontraron:", requiredDocs.filter(doc => !user.documents.some(userDoc => userDoc.name === doc)));
+      // Si falta algún documento, no permite el cambio a premium
+      return res.status(400).json({ success: false, message: 'Faltan documentos para ser usuario premium.' });
+    }
+
+    // Cambia el rol del usuario a 'premium'
+    user.rol = 'premium';
+    await user.save();
+
+    // Envía una respuesta indicando el éxito de la operación
+    res.json({ success: true, message: 'Usuario actualizado a premium.', user: user });
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    res.status(500).send('Error al actualizar el usuario.');
+  }
+};
+
+
+export const uploadDocuments = async (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No se han subido archivos');
+  }
+
+  try {
+    const userId = req.params.uid;
+    const user = await userRepository.getUserById(userId);
+
+    // Renombra los archivos subidos según los campos del formulario
+    const updatedDocuments = [];
+    if (req.files.identificacion) {
+      updatedDocuments.push({ name: 'Identificación', reference: req.files.identificacion[0].path });
+    }
+    if (req.files.comprobanteDomicilio) {
+      updatedDocuments.push({ name: 'Comprobante de domicilio', reference: req.files.comprobanteDomicilio[0].path });
+    }
+    if (req.files.estadoCuenta) {
+      updatedDocuments.push({ name: 'Comprobante de estado de cuenta', reference: req.files.estadoCuenta[0].path });
+    }
+
+    // Agrega los documentos actualizados al usuario
+    user.documents.push(...updatedDocuments);
+    await user.save();
+
+    res.redirect('/confirmar-premium');
+  } catch (error) {
+    console.error('Error al subir documentos:', error);
+    res.status(500).send('Error interno del servidor');
+  }
+};
+

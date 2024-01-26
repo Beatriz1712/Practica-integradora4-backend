@@ -20,6 +20,11 @@
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Eliminar todos los productos</button>
   </form>
+  <!-- formulario para generar el ticket de compra -->
+  <form action="/generate-ticket/{{cartId}}" method="POST">
+    <button type="submit">Generar Ticket de Compra</button>
+  </form>
+  
 {{else}}
   <p>El carrito está vacío.</p>
 {{/if}}
@@ -27,3 +32,4 @@
 <a href="/products"><h3>Volver a todos los productos</h3></a>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <script src="/js/delete.js"></script>
+

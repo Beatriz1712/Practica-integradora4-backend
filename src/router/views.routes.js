@@ -5,6 +5,8 @@ import CartManager from "../controllers/CartManager.js"
 import { isAdmin } from "../config/middlewares.js";
 import { getUsersAndView } from '../controllers/UserController.js';
 import ProductController from "../controllers/ProductController.js";
+import ticketModel from '../DAO/models/tickets.model.js'
+import { v4 as uuidv4 } from "uuid";
 
 const router = Router();
 const product = new ProductManager
@@ -193,6 +195,73 @@ router.get('/confirmar-premium', isAuthenticated, (req, res) => {
     res.render('confirmarPremium', {
         userId: req.user._id 
     });
+});
+
+
+// Ruta para generar un ticket de compra
+router.post('/generate-ticket/:cartId', async (req, res) => {
+  try {
+    const cartId = req.params.cartId;
+    // Ejemplo: Crear un ticket
+  
+    
+const newTicket = await ticketModel.create({
+  code: uuidv4(), // Utilizando uuid para generar un código único
+  purchaser: 'Usuario de ejemplo',
+  amount: calculateTotalAmount(req.cart && req.cart.products ? req.cart.products : []),
+  products: (req.cart && req.cart.products) ? req.cart.products.map(product => product.productId) : [],
+});
+    res.status(200).json({ message: "Ticket generado con éxito", ticket: newTicket });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al generar el ticket' });
+  }
+});
+
+// Funciones auxiliares
+function generateTicketCode() {
+  
+  //  usa bibliotecas como 'uuid' para esto
+}
+
+
+  function calculateTotalAmount(products) {
+    if (!products || products.length === 0) {
+      return 0; // Si no hay productos o el carrito está vacío, el monto total es cero.
+    }
+
+    // Suma los precios de todos los productos en el carrito
+    const totalAmount = products.reduce((total, product) => {
+      // Asegúrate de que el producto tenga una propiedad 'price' válida
+      if (product && typeof product.price === "number") {
+        return total + product.price;
+      }
+      return total;
+    }, 0);
+
+    return totalAmount;
+  }
+
+  
+
+//ruta para mostrar ticket
+router.get("/ticket/:id", async (req, res) => {
+  try {
+    const ticket = await ticketModel.findById(req.params.id);
+    if (!ticket){
+      return res.status(404).json({ message: "Ticket no encontrado"});
+    }
+    //si acepta html
+    if(req.accepts('html')) {
+    console.log("Rendering ticket view");
+    return res.status(200).render("ticket", { ticket });
+    }
+    
+    //res.render("ticket", { ticket });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al mostrar el ticket" });
+  }
 });
 
 export default router

@@ -9,8 +9,16 @@
   <h1>Ticket Details</h1>
   <p>Code: {{ticket.code}}</p>
   <p>Purchaser: {{ticket.purchaser}}</p>
-  <p>Products: {{#each ticket.products}} {{this}}, {{/each}}</p>
+  <p class="products-list">Products: {{#each ticket.products}} {{this}}, {{/each}}</p>
   <p>Amount: ${{ticket.amount}}</p>
   <p>Purchase Datetime: {{ticket.purchase_datetime}}</p>
+  <!-- Mensaje de agradecimiento por la compra -->
+  <p class="thank-you"> 🛒¡GRACIAS POR SU COMPRA!
+    <br> 😊Esperamos que disfrute de sus productos.</p>
+
+  <!-- Enlace para salir del app o regresar al inicio -->
+  <a href="/"><h2>Regresar al inicio</h2></a>
+
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </body>
 </html>

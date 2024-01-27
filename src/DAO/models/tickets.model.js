@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { productsModel } from './products.model.js';
 const ticketsCollection = "tickets";
-//ojo agrgo ref user
+
 const ticketSchema = new mongoose.Schema(
   {
     code: { type: String, max: 100, unique: true, required: true },

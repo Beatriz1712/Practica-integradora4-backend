@@ -20,8 +20,17 @@
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Eliminar todos los productos</button>
   </form>
+
   <!-- formulario para generar el ticket de compra -->
-  <form action="/generate-ticket/{{cartId}}" method="POST">
+  <form action="/generate-ticket/{{cartId}}" method="post">
+  <input type="hidden" name="carritoId" value=""{{cartId}}>
+
+  {{#each cart.products}}
+    <input type="hidden" name="productos[{{@index}}][id]" value="{{this.productId}}">
+    <input type="hidden" name="productos[{{@index}}][titulo]" value="{{this.title}}">
+    <input type="hidden" name="productos[{{@index}}][precio]" value="{{this.price}}">
+  {{/each}}
+  
     <button type="submit">Generar Ticket de Compra</button>
   </form>
   

@@ -132,3 +132,12 @@ body {
     color: red;
     font-size: 20px;
   }
+  .thank-you {
+    font-size: 28px; 
+    font-weight: bold; 
+    color: #0c1b2c;
+  }
+  .products-list{
+    display: block; 
+    margin-top: 10px; 
+  }
